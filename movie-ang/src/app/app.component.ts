@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -6,16 +7,22 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'movie-ang';
-  movies=[{title: 'Nothing here yet', poster: '', plot: ''}]
+  constructor(private httpClient: HttpClient){}
 
+  title = 'movie-ang';
+  movies=[{title: 'Nothing here yet', poster: '', plot: ''}];
+  items:movies | undefined
   getMovies(){
-    this.movies=[
-      {title: 'Jane Bloggs', poster: 'Computer Science', plot: 'test'},
-      {title: 'John Smith', poster: 'Computing', plot: 'test'},
-      {title: 'Melissa Brown', poster: 'Computer Science', plot: 'test'},
-      {title: 'Ian Cooper', poster: 'CGD', plot: 'test'},
-    ]
+    this.httpClient.get<movies>("http://localhost:8100/movies/1").toPromise().then(data => {
+      this.items = data
+      console.log(this.items)
+    })
   }
 
+}
+interface movies {
+  id: number;
+  firstName: string;
+  lastName: string;
+  favourite_movies: string;
 }

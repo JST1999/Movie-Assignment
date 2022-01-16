@@ -1,13 +1,16 @@
 <div ng-app="movieApp" ng-controller="movieCtrl">
   <h1>Movie App</h1>
   <h2>Movies</h2>
+  <textarea rows="1" #idInput></textarea>
+  <button (click)="getMovies(idInput)">Request</button>
+  <p>{{name}}</p>
   <table>
-    <tr><th>Title</th><th>Poster</th><th>Plot</th></tr>
+    <tr><th>ID</th><th>Title</th><th>Poster</th><th>Plot</th></tr>
     <tr *ngFor="let movie of movies">
+      <td>{{movie.id}}</td>
       <td>{{movie.title}}</td>
       <td>{{movie.poster}}</td>
       <td>{{movie.plot}}</td>
     </tr>
   </table>
-  <button (click)="getMovies()">Request</button>
 </div>

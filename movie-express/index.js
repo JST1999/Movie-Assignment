@@ -11,15 +11,6 @@ app.use((req, res, next) => {
     next();
   });
 
-// app.get("/movies", function(req, res) {
-//     res.status(200).json([
-//         {title: 'Jane Bloggs', poster: 'Computer Science', plot: 'test'},
-//         {title: 'John Smith', poster: 'Computing', plot: 'test'},
-//         {title: 'Melissa Brown', poster: 'Computer Science', plot: 'test'},
-//         {title: 'Ian Cooper', poster: 'CGD', plot: 'test'},
-//       ]);
-// })
-
 app.get("/movies/:id", async (req, res) => {
     const movieDetails = await db.getFavMovies(req.params.id);
     res.status(200).json(movieDetails[0]);

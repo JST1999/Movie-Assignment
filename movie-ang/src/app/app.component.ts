@@ -14,12 +14,36 @@ export class AppComponent {
   apikey = "4e157d55"
   title = 'movie-ang';
   movies=[{id: "Nothing here yet", title: '', poster: '', plot: ''}];
-  items:movies | undefined
+  userDetails:movies | undefined
   name = "No one fetched"
 
+  patchRequest(moviesString: string){
+    let body =
+      {
+        favMovies: moviesString
+      }
+    this.httpClient.patch(`/movies/${this.userDetails?.id}`, body).toPromise().then(data => {
+      this.getMovies(this.userDetails?.id as unknown as string)
+    })
+  }
+  addMovie(id: string){
+    if (id.length != 0 && this.userDetails?.id != null){
+      var moviesArray = this.userDetails?.favourite_movies.split(',')
+      if (!(moviesArray.includes(id))){
+        moviesArray.push(id)
+        var moviesString = moviesArray?.toString()
+
+        this.patchRequest(moviesString!)
+      }
+    }
+  }
   deleteMovie(id: string){
     if (id != "Nothing here yet"){
-      console.log(id)
+      var moviesArray = this.userDetails?.favourite_movies.split(',')
+      moviesArray?.splice(moviesArray.indexOf(id), 1)
+      var moviesString = moviesArray?.toString()
+
+      this.patchRequest(moviesString!)
     }
   }
 
@@ -28,27 +52,29 @@ export class AppComponent {
       this.movies.push({id: id, title: data?.Title!, poster: `<img src='http://img.omdbapi.com/?i=${id}&apikey=${this.apikey}'>`, plot: data?.Plot!})
     })
   }
-  getMovies(userID: HTMLTextAreaElement){
-    this.httpClient.get<movies>(`http://localhost:8100/movies/${userID.value}`).toPromise().then(data => {
-      this.items = data
+  getMovies(userID: string){
+    if (userID.length != 0){
+      this.httpClient.get<movies>(`/movies/${userID}`).toPromise().then(data => {
+        this.userDetails = data
 
-      if (this.items?.id != null){
-        this.name = `${this.items?.id} | ${this.items?.firstName} ${this.items?.lastName}`
-        var favMovies = this.items?.favourite_movies.split(',')
-        if (favMovies.length > 0){
-          this.movies = []
-          favMovies?.forEach(element => {
-            this.getMovieDetails(element)
-          });
+        if (this.userDetails?.id != null){
+          this.name = `${this.userDetails?.id} | ${this.userDetails?.firstName} ${this.userDetails?.lastName}`
+          var favMovies = this.userDetails?.favourite_movies.split(',')
+          if (favMovies.length > 0){
+            this.movies = []
+            favMovies?.forEach(element => {
+              this.getMovieDetails(element)
+            });
+          } else{
+            this.movies=[{id: "Nothing here yet", title: '', poster: '', plot: ''}];
+          }
         } else{
+          this.name = "No one fetched"
           this.movies=[{id: "Nothing here yet", title: '', poster: '', plot: ''}];
         }
-      } else{
-        this.name = "No one fetched"
-        this.movies=[{id: "Nothing here yet", title: '', poster: '', plot: ''}];
-      }
 
-    })
+      })
+    }
   }
 
 }

@@ -1,8 +1,8 @@
 # Movie-Assignment
-to run movie-ang (the angular app), use npm start
-to run movie-express (the backend with express and sqlite), also use npm start
-Enter a users number (1 to 5) to fetch their favourite movies
-Use the add movie button and textarea to enter an IMDB id
+to run movie-ang (the angular app), use npm start;
+to run movie-express (the backend with express and sqlite), also use npm start;
+Enter a users number (1 to 5) to fetch their favourite movies;
+Use the add movie button and textarea to enter an IMDB id;
 
 assumptions - entries should already be present in the system, so I added them via an ide
 data entries will stay in the file so you already have a database setup
@@ -14,7 +14,9 @@ issues - user 5 has a comma at the start of its string of favourite movies which
 ## tech:
 angular.js - will allow me to make requests and generate html easily and efficiently i.e. when I generated the movie details along with the delete button
     - used the cli to generate the app
+
 node.js v14.18.3 with modules: body-parser, express, knex, nodemon, sqlite3
+
 sqlite - I thought that this would be best since there is only one table, would also make setting up easy
     - used DB Browser for SQLite
 
